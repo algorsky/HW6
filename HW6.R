@@ -58,12 +58,29 @@ B1 <- -0.2
 x = seq(0.5, 5, by = 0.5) #Max depth 5m based on cutoff for pond
 #Need to code in error? - this is what gives variation in simulation
 
+# error can be taken from a random normal distribution
+
+# let's say that methane varies from 0 to 200 ug/L, and we think error might be up to 30
+# ug/L or so. Let's do mean of 15 and sd of 15
+e = rnorm(1, mean = 15, sd = 15)
+
+# fill in the pond column with values from 1-10 that are repeated every 5
+rep = seq(1, 5, 1)
+sim$rep = rep
+
+# fill in rep with the replicate, which are from 1-5 and repeated for each pond
+sim$pond = rep(seq(1, 10, 1), times = c(5, 5, 5, 5, 5, 5, 5, 5, 5, 5))
+
+# create x values that are depth values, which are normally distributed between 0 and 5 meters
+sim$x = abs(rnorm(50, mean = 2, sd = 1)) # take the absolute value so they're above 0
+
+
 
 #Start goal - get a GLM to work 
 #Would want to get an estimate for each pond at each depth 10 times
 #For loop iterating through ponds? Then get 10 estimate each for each depth
 #Uncertain how to save that into the dataframe with that structure though
-for i in i:10{
+for (i in i:10){
   
 }
 mod <- glm(y ~ x, family = gaussian)
