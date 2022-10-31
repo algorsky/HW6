@@ -53,8 +53,8 @@ sim <- data.frame(matrix(data=NA, nrow = 50, ncol = 13))
 colnames(sim) <- c('pond','rep','x','y1','y2','y3','y4','y5','y6','y7','y8','y9','y10')
 
 #set regression coeffecients
-B0 <- 10
-B1 <- -0.2
+B0 <- 1
+B1 <- -1
 x = seq(0.5, 5, by = 0.5) #Max depth 5m based on cutoff for pond
 #Need to code in error? - this is what gives variation in simulation
 
@@ -74,14 +74,19 @@ sim$pond = rep(seq(1, 10, 1), times = c(5, 5, 5, 5, 5, 5, 5, 5, 5, 5))
 # create x values that are depth values, which are normally distributed between 0 and 5 meters
 sim$x = abs(rnorm(50, mean = 2, sd = 1)) # take the absolute value so they're above 0
 
-
+# need ten different error values for y
+error = rnorm(10, mean = 15, sd = 15)
 
 #Start goal - get a GLM to work 
 #Would want to get an estimate for each pond at each depth 10 times
 #For loop iterating through ponds? Then get 10 estimate each for each depth
 #Uncertain how to save that into the dataframe with that structure though
-for (i in i:10){
+for(i in 1:nrow(sim)){
+for (j in 4:14){
   
+  # calculate y values for the different error values
+  sim[i, j] = B1*sim$x[i] + B0 +error[j-3]
+}
 }
 mod <- glm(y ~ x, family = gaussian)
 
